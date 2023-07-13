@@ -1,3 +1,7 @@
+%%This demo presents a drifting Gabor patch at the left side of the screen 4 times
+%%The combination of PTB-3 functions and the 'timer' function in MATLAB is the point of this demo.
+%% 2023.7.13 Qingrui Liu @UTokyo
+
 %drifting gabor patch presetting
 %-------------------------------
 sca;
@@ -15,7 +19,7 @@ display.grey = display.white / 2;
     [], 32, 2, [], [], kPsychNeedRetinaResolution); 
 display.ifi = Screen('GetFlipInterval',display.window);
 display.topPriorityLevel = MaxPriority(display.window);
-Priority(display.topPriorityLevel);tttt
+Priority(display.topPriorityLevel);
 
 %Gabor information
 %-----------------
