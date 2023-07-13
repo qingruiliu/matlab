@@ -32,13 +32,13 @@ display.dstRectRight = [display.windowRect(3) - 2 * display.gaborDimPix, display
 display.sigma = display.gaborDimPix / 7;
 display.orientationTarget = 0; %vertical
 display.orientationNontarget = 90; %horizontal
-display.contrast = 0.8;
+display.contrast = 0.5;
 display.aspectRatio = 1.0;
 display.phase = 0; 
 display.visiMatrix = {display.dstRectLeft, display.orientationTarget;
                       display.dstRectRight, display.orientationTarget;
                       display.dstRectLeft, display.orientationNontarget;
-                      display.dstRectRight, display.orientationNontarget};
+                      display.dstRectRight, display.orientationNontarget}; %in this demo, using tasksExecuted property of timer to index the visiMatrix
 %spatial frequency
 display.numCycles = 10;
 display.freq = display.numCycles / display.gaborDimPix;
@@ -79,15 +79,16 @@ end
 
 function timer1display(~,~)
  global display
- disp('sedID = 2')
  display.seqID = 2;
  tasksExecuted = get(display.t1,'TasksExecuted');%get the number of the executed task
+ stimID = tasksExecuted;
+ x = sprintf('seqID = 2 , stimID = %s',num2str(stimID));
+ disp(x)
  updateVbl;%visual stimulation
   while display.vbl - display.vblt0 < display.visiPeriod
       %~KbCheck
       centerPosition = cell2mat(display.visiMatrix(tasksExecuted,1));
       targetOrNot = cell2mat(display.visiMatrix(tasksExecuted,2));
-
     Screen('DrawTextures', display.window, display.gabortex, [], centerPosition, targetOrNot, [], [], [], [],...
         kPsychDontDoRotation, display.propertiesMat');
 
