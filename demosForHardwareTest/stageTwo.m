@@ -1,5 +1,4 @@
-%%
-% open the monitor, display the gray color background
+%% open the monitor, display the gray color background
 global display 
 PsychDefaultSetup(2);
 Screen('Preference','SkipSyncTests',1);
@@ -13,12 +12,10 @@ display.ifi = Screen('GetFlipInterval',display.window);
 display.topPriorityLevel = MaxPriority(display.window);
 Priority(display.topPriorityLevel);
 
-%%
-%start communication
+%% start communication
 display.a = arduino("/dev/cu.usbmodem21401",'Leonardo','BaudRate',115200);
 
-%%
-%Gabor presetting
+%% Gabor presetting
 %size of the gabor patch, full of the height in this case
 display.gaborDimPix = display.windowRect(4);
 display.width = display.windowRect(3);
@@ -53,24 +50,20 @@ updateVbl;
 display.waitframes = 1;
 display.phasePerFrame = 2 * pi;  %change the speed of grating moving
 
-%%
-%program presetting
+%% program variables
 display.licktrial = 0;
 
 %set the trial limit and the empty data
 display.lickdata = cell(150,1);
 lickTrialLimit = 150;
 
-%%
-%display UI, waiting for the initialization
+%% display UI, waiting for the initialization
 infoUI();
 
-%%
-%30 seconds countdown 
+%% 30 seconds countdown 
 countDown;
 
-%%
-%start tic
+%% start tic and main loop
 totalTic = tic;
 %main loop
 for trialNum = 1:1000 
@@ -95,8 +88,8 @@ for i = 1 : numel(display.lickdata)
 end
 fprintf('>> total time cost:  %s minutes %s seconds \n',num2str(floor((totalTime)/60)),num2str(mod(totalTime,60)));
 fprintf('>> total lick times: %s times \n',num2str(totalLickTimes));
-%%
-%functions
+
+%% functions
 function infoUI(~,~)
  global display
  prompt = {'mouseID', 'trainStage', 'dayNumber', 'saveDir'};
