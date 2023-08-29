@@ -35,7 +35,6 @@ display.contrast = 0.5;
 display.aspectRatio = 1.0;
 display.phase = 0; 
 
-%in this demo, using tasksExecuted property of timer to index the visiMatrix
 %spatial frequency
 display.numCycles = 10;
 display.freq = display.numCycles / display.gaborDimPix;
@@ -47,7 +46,7 @@ display.preContrastMultiplier = 0.5;
 display.gabortex = CreateProceduralGabor(display.window, display.gaborDimPix, display.gaborDimPix, [],...
     display.backgroundOffset, display.disableNorm, display.preContrastMultiplier);
 
-%randomize the phase and make a properti es matrix
+%make the property matrix
 display.propertiesMat = [display.phase, display.freq, display.sigma, display.contrast, display.aspectRatio, 0, 0, 0];
 
 updateVbl;
