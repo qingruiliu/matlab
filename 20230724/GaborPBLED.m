@@ -8,7 +8,7 @@ sca;
 close all;
 clear;
 
-global display 
+global display
 PsychDefaultSetup(2);
 Screen('Preference','SkipSyncTests',1);
 display.screenNumber = max(Screen('Screens'));
@@ -16,13 +16,13 @@ display.white = WhiteIndex(display.screenNumber);
 display.grey = display.white / 2;
 
 [display.window, display.windowRect] = PsychImaging('OpenWindow', display.screenNumber, display.grey,...
-    [], 32, 2, [], [], kPsychNeedRetinaResolution); 
+    [], 32, 2, [], [], kPsychNeedRetinaResolution);
 display.ifi = Screen('GetFlipInterval',display.window);
 display.topPriorityLevel = MaxPriority(display.window);
 Priority(display.topPriorityLevel);
 
 %Initialize serial communication
-display.s = serialport("COM10",115200); 
+display.s = serialport("COM10",115200);
 configureTerminator(display.s,"CR/LF");  %both input and output
 
 %open the UI and wait for the initialization of PTB-3 and serial
@@ -80,45 +80,45 @@ display.visiPeriod = 4;
 start(display.t1)
 
 function timer1output(~,~)
- global display
- write(display.s,'1','char'); %send Arduino the seqID = 1 (stay)
- disp('>>>seqID = 1')
- display.seqID = 1; 
+global display
+write(display.s,'1','char'); %send Arduino the seqID = 1 (stay)
+disp('>>>seqID = 1')
+display.seqID = 1;
 end
 
 function timer1display(~,~)
- global display
- write(display.s,'2','char'); %send Arduino the seqID = 2 (pre-RW)
- display.seqID = 2;
- trialNum = get(display.t1,'TasksExecuted');%get the number of the executed task
- fprintf('>>>seqID = 2, trial number = %s\n',num2str(trialNum))
- updateVbl;%visual stimulation
- flagRW = true;
-  while display.vbl - display.vblt0 < display.visiPeriod
-      if display.vbl - display.vblt0 > 1 && flagRW == true %make the write/disp event happen only once
-          write(display.s,'3','char'); %send Arduino the seqID = 3 (RW)
-          disp('>>>seqID = 3')  
-          flagRW = false;
-      end
+global display
+write(display.s,'2','char'); %send Arduino the seqID = 2 (pre-RW)
+display.seqID = 2;
+trialNum = get(display.t1,'TasksExecuted');%get the number of the executed task
+fprintf('>>>seqID = 2, trial number = %s\n',num2str(trialNum))
+updateVbl;%visual stimulation
+flagRW = true;
+while display.vbl - display.vblt0 < display.visiPeriod
+    if display.vbl - display.vblt0 > 1 && flagRW == true %make the write/disp event happen only once
+        write(display.s,'3','char'); %send Arduino the seqID = 3 (RW)
+        disp('>>>seqID = 3')
+        flagRW = false;
+    end
     Screen('DrawTextures', display.window, display.gabortex, [], display.dstRectLeft, display.orientationTarget, [], [], [], [],...
         kPsychDontDoRotation, display.propertiesMat');
-
+    
     display.vbl = Screen('Flip', display.window, display.vbl + (display.waitframes - 0.5) * display.ifi);
-
+    
     display.propertiesMat(1) = display.propertiesMat(1) + display.phasePerFrame;
     %outdum = readline(display.s);
-  end
-  updateVbl;
-  write(display.s,'2','char');
+end
+updateVbl;
+write(display.s,'2','char');
 end
 
 function timer1end(~,~)
- global display
- disp('>>>seqID = 4')
- write(display.s,'4','char'); %send Arduino the seqID = 4
- display.seqID = 4;
- %sca
- %clear all
+global display
+disp('>>>seqID = 4')
+write(display.s,'4','char'); %send Arduino the seqID = 4
+display.seqID = 4;
+%sca
+%clear all
 end
 
 function updateVbl(~,~)   %flip to the gray background and update the vbl
