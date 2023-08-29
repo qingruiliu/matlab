@@ -1,5 +1,4 @@
-%%
-% open the monitor, display the gray color background
+%% open the monitor, display the gray color background
 global display 
 PsychDefaultSetup(2);
 Screen('Preference','SkipSyncTests',1);
@@ -13,24 +12,20 @@ display.ifi = Screen('GetFlipInterval',display.window);
 display.topPriorityLevel = MaxPriority(display.window);
 Priority(display.topPriorityLevel);
 
-
-%%
-%start communication
+%% start communication
 a = arduino("/dev/cu.usbmodem21401",'Leonardo','BaudRate',115200);
 
-%%
-%display UI, waiting for the initialization
+%% display UI, waiting for the initialization
 infoUI();
 
-%%
-%presetting
+%% variables
 data = zeros(100,2);
 data(:,1) = 1:100;
 licktime = 0;
 lickFlag = true;
 timeLapse = tic;
-%%
-%main loop
+
+%% main loop
 while licktime < 100
     lick = readDigitalPin(a,'D8');
     if lick == true && lickFlag == true
@@ -47,8 +42,7 @@ end
 
 disp('100 time licked!')
 
-%%
-%functions
+%% functions
 function infoUI()
 global display
 prompt = {'mouseID', 'trainStage', 'dayNumber', 'saveDir'};
