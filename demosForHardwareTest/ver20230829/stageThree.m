@@ -72,7 +72,7 @@ display.stageData = {};          %total stage data
 %% display UI, waiting for the initialization
 infoUI();
 
-%% 30 seconds countdown 
+%% 15 seconds countdown 
 countDown;
 
 %% start tic and main loop
@@ -85,7 +85,7 @@ for trialNum = 1:50
     trialCue; %play the auditory cue of each single trial
     visiStim; %present the visual stimulation
     responseWindow;
-    pause(2); %ITI
+    intertrialInterval;
 end
 
 %% final information
@@ -179,6 +179,7 @@ iSame = 0;
 end
 
 function responseWindow(~,~)
+
  global display
  lickFlag = true;
  rwTime = tic;
@@ -259,4 +260,26 @@ function responseWindow(~,~)
 
  end
 
+end
+
+function intertrialInterval(~,~)
+global display
+  ITIflag = true;
+  ITITime = tic;
+  ITIlimit = 2;
+  while toc(ITITime) < ITIlimit
+      ITIlick = readDigitalPin(display.a,'D8');
+
+      if ITIlick == true && ITIflag == true   %--------lick in ITI----------
+          ITIflag = false;
+          pause(0.1);
+          fprintf('>>>lick in ITI!!!<<<ITI + 2s!!!\n');
+          ITIlimit = ITIlimit + 2;
+      end
+
+      if ITIflag == false
+          ITIflag = true;
+      end
+  end
+  fprintf('>>>ITI finished!!!<<< ITI time: %s seconds \n',num2str(toc(ITITime)));
 end
