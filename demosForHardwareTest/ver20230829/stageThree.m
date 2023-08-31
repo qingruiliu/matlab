@@ -82,8 +82,9 @@ for trialNum = 1:50
     display.trialNum = trialNum;
     disp('------------------new trial-----------------------')
     fprintf('trialNum = %s\n',num2str(display.trialNum))
-    trialCue; %play the auditory cue of each single trial
-    visiStim; %present the visual stimulation
+    trialCue;  %play the auditory cue of each single trial
+    pause(1);  
+    visiStim;  %present the visual stimulation
     responseWindow;
     intertrialInterval;
 end
@@ -193,8 +194,8 @@ function responseWindow(~,~)
         if lick == true && lickFlag == true  %----------------Hit------------------------
          writeDigitalPin(display.a,'D7',1);  %water pump
          lickFlag = false;
-         pause(0.01);  
-         writeDigitalPin(display.a,'D7',0)
+         writeDigitalPin(display.a,'D7',0);
+         pause(0.5);     %不応期
         end
         if lickFlag == false  
            if trialFlag == true %this if loop is used for licktrial increment
@@ -247,7 +248,7 @@ function responseWindow(~,~)
             display.blockData{display.trialNum}(lickTimesReporter,2) = lickTimesReporter;
             display.blockData{display.trialNum}(lickTimesReporter,3) = tocReporter; 
             pause(7); %4 seconds timeout of FA
-            return
+            return    %end the function, start ITI
         end
    end
 
@@ -262,7 +263,7 @@ function responseWindow(~,~)
 
 end
 
-function intertrialInterval(~,~)
+function intertrialInterval(~,~)   %ITI is 2 s, 2 extra second is extended.
 global display
   ITIflag = true;
   ITITime = tic;
