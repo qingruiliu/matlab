@@ -32,12 +32,12 @@ while licktime < 100
         writeDigitalPin(a,'D7',1);
         lickFlag = false;
         licktime = licktime + 1;
-        pause(0.02);
+        writeDigitalPin(a,'D7',0);
+        pause(0.5);     %不応期
         fprintf('licktime = %s\n',num2str(licktime));
         data(licktime,2)=toc(timeLapse);
     end
     lickFlag = true;
-    writeDigitalPin(a,'D7',0);
 end
 
 disp('100 time licked!')
