@@ -71,7 +71,7 @@ for trialNum = 1:1000
     disp('------------------new trial-----------------------')
     fprintf('trialNum = %s\n',num2str(trialNum))
     trialCue; %play the auditory cue of the single trial
-    pause(0.02);
+    pause(1);　   %the visual stimulation starts 1 second after the auditory tone
     visiStim; %present the visual stimulation
     responseWindow;
     pause(2);
@@ -145,7 +145,8 @@ global display
      if lick == true && lickFlag == true
          writeDigitalPin(display.a,'D7',1);
          lickFlag = false;
-         pause(0.01);
+         writeDigitalPin(display.a,'D7',0);
+         pause(0.5);  %不応期
      end
      if lickFlag == false     
          if trialFlag == true %this if loop is used for licktrial increment
@@ -162,6 +163,6 @@ global display
         display.lickdata{display.licktrial}(lickTimesReporter,1) = lickTimesReporter;
         display.lickdata{display.licktrial}(lickTimesReporter,2) = tocReporter;
      end        
-     writeDigitalPin(display.a,'D7',0);
+
   end
 end
