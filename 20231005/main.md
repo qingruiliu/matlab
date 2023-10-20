@@ -13,5 +13,3 @@ another timer was used to generate the refractory period after each lick.
 This demo will be further integrated into the stageTwo program.
 
 Qingrui Liu @UTokyo
-
-
