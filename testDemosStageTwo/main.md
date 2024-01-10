@@ -10,3 +10,9 @@ This demo fulfills the target of **trial raster plotting**:
 5. licks in ITI are labeled as black dots.
 
 The right axes plot the time length of individual trials.
+
+%%2024.1.10 **stageTwoNormrnd240105.m** is added.
+This demo may be the ultimate version of stage two program:
+1. modified trial raster plotting
+2. randomized post-cue period fitting normal distribution(mean=1, SD=0.1).
+3. **Criteria: get 150 times of water reward in 300 trials **
