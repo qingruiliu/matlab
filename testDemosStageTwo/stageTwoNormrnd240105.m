@@ -74,7 +74,7 @@ h.gabortex = CreateProceduralGabor(h.window, h.gaborDimPix, h.gaborDimPix, [],..
 h.propertiesMat = [h.phase, h.freq, h.sigma, h.contrast, h.aspectRatio, 0, 0, 0];
 updateVbl;
 h.waitframes = 1;
-h.phasePerFrame = 5 * pi;  %change the speed of grating moving
+h.phasePerFrame = 4 * pi;  %change the speed of grating moving
 
 %% program variables
 trialNumLimit = 300;
@@ -83,9 +83,6 @@ lickTrialLimit = 150;
 h.lickdata = {};
 h.data1 = zeros(trialNumLimit,4);
 h.totalLickTimes = 0;
-
-%create random post-cue period interval fitting normal distribution, with mean = 1, SD = 0.1
-h.postCueInterval = normrnd(1,0.1,[1 trialNumLimit]);  
 
 %% h UI, waiting for the initialization
 infoUI();
@@ -169,7 +166,7 @@ title('trial raster');
 xlabel('seconds');
 ylabel('trial number');
 xlim([0 9]);
-ylim([1 inf]);
+ylim([0 inf]);
 set(h.trialRaster,'Ydir','reverse');
 hold on
 
@@ -317,9 +314,9 @@ global h
     h.inOrOutRW = -1;  %inOrOutRW value: postCuePeriod -1, RW 1, Visi and ITI 0.
     start(h.tLickCounter); 
     h.postCueTime = tic;
-    while toc(h.postCueTime) <= h.postCueInterval(h.trialNum) %index the random number created by normrnd() function
+    while toc(h.postCueTime) <= 1 %post cue time last for one seconds
     end
-    fprintf('>>post-cue period finished!!!Time length is %s \n',num2str(h.postCueInterval(h.trialNum)))
+    disp('>>post-cue period finished!!!')
 end
 
 function visiStim(~,~)
@@ -375,14 +372,13 @@ global h
             case 1 % lick in RW
                 h.inRWCounter = h.inRWCounter + 1;
                 set(h.lickInRWtotal,'String',num2str(h.inRWCounter));
-                if h.lickInRWOneTrial < 1         %&& h.outRWCounterSingle == 0 
-                                                                          %in this demo, no limilation of first lick in RW 
-                   plot(h.trialRaster,round(toc(h.rwTime),2) + 1,h.trialNum,'.g');            
+                if h.lickInRWOneTrial < 1 && h.outRWCounterSingle == 0  %only the first  lick is rewarded
+                   plot(h.trialRaster,round(toc(h.rwTime),3) + 1,h.trialNum,'.g');  %the first lick in RW is marked as green dot          
                    writeDigitalPin(h.a,'D9',1);
                    h.hitTrialNumber = h.hitTrialNumber + 1;
                    set(h.hitTrialNumUI,'String',num2str(h.hitTrialNumber));
                 else
-                    plot(h.trialRaster,round(toc(h.rwTime),2) + 1,h.trialNum,'.b'); 
+                    plot(h.trialRaster,round(toc(h.rwTime),3) + 1,h.trialNum,'.b'); %other licks in RW are marked as blue dot
                 end
                 fprintf('lick in RW %s ',num2str(h.inRWCounter));
                 start(h.tRefractory);
@@ -407,10 +403,10 @@ global h
                     start(h.tRefractory);
                     % plot(h.trialRaster,round(toc(h.postCuePeriodlatencyTic),3),h.trialNum,'|k');  %plot the lick before 
             otherwise
-                   if RWflag == 0
-                       plot(h.trialRaster,round((h.vbl - h.vblt0),2),h.trialNum,'.r');  %plot the early lick in visual stimulation window
+                   if RWflag == 0 && (h.vbl - h.vblt0) <= 1
+                       plot(h.trialRaster,round((h.vbl - h.vblt0),3),h.trialNum,'.r');  %plot the early lick in visual stimulation window
                    elseif RWflag == 2
-                       plot(h.trialRaster,round(toc(h.ITITime),2)+5,h.trialNum,'.k'); %plot the ITI licking in 5~9 s ITI window
+                       plot(h.trialRaster,round(toc(h.ITITime),3)+5,h.trialNum,'.k'); %plot the ITI licking in 5~9 s ITI window
                    end
                 h.outRWCounter = h.outRWCounter + 1;
                 h.outRWCounterSingle = h.outRWCounterSingle + 1;
