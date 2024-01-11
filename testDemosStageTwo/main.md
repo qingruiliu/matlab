@@ -16,3 +16,8 @@ This demo may be the ultimate version of stage two program:
 1. modified trial raster plotting
 2. randomized post-cue period fitting normal distribution(mean=1, SD=0.1).
 3. Criteria: get 150 times of water reward in 300 trials
+
+%%2024.1.11 **stageTwoNormrnd240111.m** is added.
+Modified version of stageTwoNormrnd240105.m.
+1. all of the _round()_ functions for plotting were set to 3 digitals after decimal
+2. line 406: && (h.vbl - h.vblt0) <= 1 is added, to omit the licking out of the visual stimulation period due to latency issue.
