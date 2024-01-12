@@ -84,6 +84,9 @@ h.lickdata = {};
 h.data1 = zeros(trialNumLimit,4);
 h.totalLickTimes = 0;
 
+%%create random post-cue period intervals fitting normal distribution, with mean = 1, SD = 0.1
+h.postCueInterval = normrnd(1,0.1,[1 trialNumLimit]);
+
 %% h UI, waiting for the initialization
 infoUI();
 
@@ -314,9 +317,9 @@ global h
     h.inOrOutRW = -1;  %inOrOutRW value: postCuePeriod -1, RW 1, Visi and ITI 0.
     start(h.tLickCounter); 
     h.postCueTime = tic;
-    while toc(h.postCueTime) <= 1 %post cue time last for one seconds
+    while toc(h.postCueTime) <= h.postCueInterval(h.trialNum) %index the randomized post-cue interval
     end
-    disp('>>post-cue period finished!!!')
+    fprintf('>>post-cue period finished!! Time length is %s \n',num2str(h.postCueInterval(h.trialNum)))
 end
 
 function visiStim(~,~)
